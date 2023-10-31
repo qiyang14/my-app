@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import type { ReactElement } from 'react'
 import Navbar from "@/app/scenes/navbar"
 
 function MyButton() {
@@ -9,7 +9,7 @@ function MyButton() {
   );
 }
 
-export default function Home() {
+export default function Portfolio() {
   return (
     <div className='app'>
       <Navbar />
@@ -17,3 +17,6 @@ export default function Home() {
     </div>
   );
 }
+
+ 
+
