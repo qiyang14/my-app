@@ -3,15 +3,15 @@ import Logo from "../../../public/icon.png"
 // import Link from "@/app/scenes/navbar/Link"
 import Link from 'next/link'
 
-type Props = {}
+type Props = {isTopOfPage: boolean;}
 
 const Navbar = (props: Props) => {
     const flexBetween = "flex items-center justify-between"
     const flexCol = "flex-col items-center justify-between"
   return (
-   <nav>
+   <nav style={{height: 8 + 'em'}}>
     <div
-    className={`${flexCol} fixed top-0 z-30 w-full py-6`}
+    className={`${flexCol} fixed top-0 z-30 w-full py-6 text-white`}
     >
         <div
         className={`${flexBetween} mx-auto w-5/6`}
