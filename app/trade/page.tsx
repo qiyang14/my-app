@@ -8,7 +8,6 @@ const Trade = (props: Props) => {
   const flexCol = "flex flex-col items-center justify-between"
   return (
     <div className='app'>
-      <Navbar isTopOfPage={true}/>
       <div className={`${flexBetween} text-white`}>
         <div className={`${flexCol} pl-20`}>
           <p className={`${flexBetween}`}>ACCOUNT VALUE</p>

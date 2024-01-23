@@ -6,7 +6,6 @@ type Props = {}
 const Research = (props: Props) => {
   return (
     <div className='app'>
-    <Navbar isTopOfPage={true}/>
 
     </div>
   )
