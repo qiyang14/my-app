@@ -27,12 +27,12 @@ export default function Portfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
-    <div className={`app`}>
-      <div className = 'flex flex-row'>
+    <div className={`app text-black`}>
+      <div className = 'flex flex-row p-7 mx-28'>
         <div className='basis-1/3'>
         <div className = {`${flexCol}`}>
           <p className='text-white m-5'>OVERVIEW</p>
-          <div className='box bg-white h-72'>
+          <div className='box bg-white h-72' style={{width:'100%'}}>
             <p className='content-in-box inset-y-1.5 inset-x-1.5'>ACCOUNT VALUE</p>
             <b className='content-in-box top-6 inset-x-1.5'>$100,000.00</b>
             <p className='content-in-box top-12 inset-x-1.5'>CASH</p>
@@ -41,7 +41,7 @@ export default function Portfolio() {
         </div>
         <div className = {`${flexCol}`}>
           <div className='text-white m-5'>GAME INFO</div>
-          <div className='box bg-white h-36'>
+          <div className='box bg-white h-36 'style={{width:'100%'}}>
             <p>CURRENT RANK</p>
             <p>23/36</p>
             <p>TOP PLAYER</p>
@@ -54,7 +54,7 @@ export default function Portfolio() {
         </div>
         <div className = {`${flexCol} basis-2/3`}>
           <p className='text-white m-5'>PERFORMANCE</p>
-          <div className='box bg-white h-96'>
+          <div className='box bg-white h-96' style={{width:'80%'}}>
             
           </div>
         </div>

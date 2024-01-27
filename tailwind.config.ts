@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-
+// const withMT = require("@material-tailwind/react/utils/withMT");
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -20,6 +20,7 @@ const config: Config = {
         'blue':'#404CCD',
         'green':'#54958B',
         "dark-blue": "#383D56",
+        'menu': '#D9D9D980'
       },
       fontFamily: {
         'Lato':['lato'],
