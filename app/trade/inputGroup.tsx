@@ -19,7 +19,7 @@ function FormFloatingTextareaExample() {
     price: 12,
   })
   const [errors, setErrors] = useState({
-    prePrice: false,
+    // prePrice: false,
     
   })
   const setField = (field: any, value: any) => {
@@ -27,12 +27,12 @@ function FormFloatingTextareaExample() {
         ...form,
         [field]:value
     })
-    if(!!errors[field]){
-        setErrors({
-            ...form,
-            [field]:null
-        })
-    }
+    // if(!!errors[field]){
+    //     setErrors({
+    //         ...form,
+    //         [field]:null
+    //     })
+    // }
   }
   const handleClose = () => setShow(false);
   const handleShow = () => {
