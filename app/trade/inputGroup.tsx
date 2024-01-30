@@ -11,60 +11,92 @@ function FormFloatingTextareaExample() {
   const flexCol = "flex flex-col items-center justify-between"
   const flexBetween = "flex items-center"
   const [show, setShow] = useState(false);
-
+  const [form, setForm] = useState({
+    prePrice: 0,
+    symbol: "ABC",
+    action:"Buy",
+    quantity: 0,
+    price: 12,
+  })
+  const [errors, setErrors] = useState({
+    prePrice: false,
+    
+  })
+  const setField = (field: any, value: any) => {
+    setForm({
+        ...form,
+        [field]:value
+    })
+    if(!!errors[field]){
+        setErrors({
+            ...form,
+            [field]:null
+        })
+    }
+  }
   const handleClose = () => setShow(false);
   const handleShow = () => {
     setShow(true);
-    alert("Clicked me!");
-    console.log('button be clicked');
+    // alert("Clicked me!");
+    // console.log('button be clicked');
     };
-    const try1 = () => {
-        alert('see');
-    };
+    // const try1 = () => {
+    //     alert('see');
+    // };
   return (
     <>
     <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
 
     <script
     src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"
-    crossorigin></script>
+    ></script>
 
     <script
     src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js"
-    crossorigin></script>
+    ></script>
 
     <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-    crossorigin="anonymous"
+crossorigin="anonymous"
     />
     <script>var Alert = ReactBootstrap.Alert;</script>
 
-    <b className='content-in-box inset-y-1.5 inset-x-1.5'>DAY: 267</b>
-    <p className='content-in-box top-6 inset-x-1.5'>Predicted Price</p>
-    <InputGroup size="sm" className="mb-3 content-in-box top-16 inset-x-1.5 w-50">
+    <b className='ml-4'>DAY: 267</b>
+    <p className='ml-4'>Predicted Price</p>
+    <InputGroup size="sm" className="mb-3 ml-4 content-in-box w-50">
         <Form.Control
         className='w-10'
           aria-label="Small"
           type="number" 
           aria-describedby="inputGroup-sizing-sm"
+          value = {form.prePrice}
+          onChange={e=>setField('prePrice',e.target.value)}
+          isInValid={!!errors.prePrice}
         />
+        <Form.Control.Feedback type='invalid'>
+            {errors.prePrice}
+        </Form.Control.Feedback>
     </InputGroup>
-    <p className='content-in-box top-32 inset-x-1.5'>Symbol</p>
-    <FloatingLabel controlId="Symbol" label="Choose the company" className='content-in-box top-32 inset-x-1.5 w-50'>
-      <Form.Select aria-label="Floating label select example">
-      <option value="1">ABC</option>
+    <p className='ml-4'>Symbol</p>
+    <FloatingLabel controlId="Symbol" label="Choose the company" className='content-in-box ml-4 w-50'>
+      <Form.Select aria-label="Floating label select example"
+
+      onChange={e=>setField('symbol',e.target.value)}
+      >
+      <option value="ABC">ABC</option>
 
       </Form.Select>
     </FloatingLabel>
-    <div className={`${flexBetween} space-x-36 mt-40 ml-4`}>
+    <div className={`${flexBetween} space-x-36 mt-4 ml-4`}>
         <div className={`${flexCol}`}>
           {/* <p className={`${flexBetween}`}>Action</p> */}
           <FloatingLabel controlId="Action" label="Action" className='content-in-box'>
-            <Form.Select aria-label="Floating label select example">
-                <option value="1">Buy</option>
-                <option value="2">Sell</option>
+            <Form.Select aria-label="Floating label select example"
+            onChange={e=>setField('action',e.target.value)}>
+                <option value="Buy">Buy</option>
+                <option value="Sell">Sell</option>
             </Form.Select>
             </FloatingLabel>
             {/* <Form.Select aria-label="select example">
@@ -84,6 +116,7 @@ function FormFloatingTextareaExample() {
             aria-label="Small"
             type="number" 
             aria-describedby="inputGroup-sizing-sm"
+            onChange={e=>setField('quantity',e.target.value)}
             />
 
           </FloatingLabel>
@@ -102,15 +135,18 @@ function FormFloatingTextareaExample() {
     </Button>
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Order Review</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+            <p>You Choose to {form.action} {form.quantity} shares of stock {form.symbol} at a price of $ {form.price} each</p>
+            <p>And Your Predicted Price for this Stock is $ {form.prePrice}</p>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            Comfirm Order
           </Button>
         </Modal.Footer>
     </Modal>
