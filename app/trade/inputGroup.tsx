@@ -45,7 +45,7 @@ function FormFloatingTextareaExample() {
     // };
   return (
     <>
-    <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossOrigin="anonymous"></script>
 
     <script
     src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"
@@ -59,7 +59,7 @@ function FormFloatingTextareaExample() {
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-crossorigin="anonymous"
+    crossOrigin="anonymous"
     />
     <script>var Alert = ReactBootstrap.Alert;</script>
 
@@ -73,11 +73,11 @@ crossorigin="anonymous"
           aria-describedby="inputGroup-sizing-sm"
           value = {form.prePrice}
           onChange={e=>setField('prePrice',e.target.value)}
-          isInValid={!!errors.prePrice}
+        //   isInValid={!!errors.prePrice}
         />
-        <Form.Control.Feedback type='invalid'>
+        {/* <Form.Control.Feedback type='invalid'>
             {errors.prePrice}
-        </Form.Control.Feedback>
+        </Form.Control.Feedback> */}
     </InputGroup>
     <p className='ml-4'>Symbol</p>
     <FloatingLabel controlId="Symbol" label="Choose the company" className='content-in-box ml-4 w-50'>
