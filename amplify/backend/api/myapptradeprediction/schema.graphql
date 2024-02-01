@@ -1,0 +1,50 @@
+type HistoricalTransaction @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  day: Int
+  symbol: String
+  action: String
+  price: Float
+  qty: Int
+  totalValue: Float
+  userID: ID! @index(name: "byUser")
+  Stock: Stock @hasOne
+}
+
+type Stock @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  symbol: String
+  price: [Float]
+  day: Int
+  open: [Float]
+  high: [Float]
+  low: [Float]
+  close: [Float]
+  volume: [Float]
+}
+
+type UserHolding @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  stocks: [String]
+  purchasePrice: [Float]
+  qty: [Int]
+  totalValue: [Float]
+}
+
+type UserPerformance @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  accountValue: Float
+  cash: Float
+  todayChange: Float
+  annualReturn: Float
+  performance: [Float]
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  username: String
+  password: String
+  email: String
+  UserHistoricalTransaction: [HistoricalTransaction] @hasMany(indexName: "byUser", fields: ["id"])
+  UserPerformance: UserPerformance @hasOne
+  UserHolding: UserHolding @hasOne
+}
