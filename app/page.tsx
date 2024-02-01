@@ -27,8 +27,8 @@ export default function Portfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
-    <div className={`app text-black`}>
-      <div className = 'flex flex-row p-7 mx-28'>
+    <div className={`${flexCol} h-screen app text-black `}>
+      <div className = 'flex flex-row p-7 w-2/3 mx-32'>
         <div className='basis-1/3'>
         <div className = {`${flexCol}`}>
           <p className='text-white m-5'>OVERVIEW</p>
