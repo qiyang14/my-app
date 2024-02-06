@@ -21,7 +21,7 @@ const Trade = (props: Props) => {
     
   return (
     <div className={`${flexCol} app`}>
-      <div className={`${flexBetween} text-white mt-32 space-x-36`}>
+      <div className={`${flexBetween} text-white mt-14 space-x-36`}>
         <div className={`${flexCol}`}>
           <p className={`${flexBetween}`}>ACCOUNT VALUE</p>
           <p className={`${flexBetween}`}>$100,000.00</p>

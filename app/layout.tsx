@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navigation />
+        <p className='m-16'></p>
         {children}
         </body>
     </html>

@@ -5,7 +5,7 @@ type Props = {}
 
 const Game = (props: Props) => {
   return (
-    <div className='app flex items-center justify-between flex-col'>
+    <div className='app flex items-center justify-between flex-col pt-20'>
       {/* ml-96 mx-40 */}
       <div className='h-screen'>
       <ul className='list-disc list-outside text-white flex flex-col mx-32'>

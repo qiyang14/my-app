@@ -10,9 +10,9 @@ import {
 from 'mdb-react-ui-kit';
 
 const login = () => {
-  const flexCol = "flex flex-col items-center justify-between"
+  const flexCol = "flex flex-col items-center"
   return (
-    <div className={`${flexCol} app mt-36 text-white`}>
+    <div className={`${flexCol} app pt-36 text-white`}>
         <h2 className='text-center'>Log In</h2>
           <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
               <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' />
