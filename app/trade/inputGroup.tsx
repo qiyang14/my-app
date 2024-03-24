@@ -4,10 +4,13 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useState } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
+import axios from 'axios';
 
-
-function FormFloatingTextareaExample() {
+interface FormFloatingBasicProps {
+  day: number;
+}
+const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
   const flexCol = "flex flex-col items-center justify-between"
   const flexBetween = "flex items-center"
   const [show, setShow] = useState(false);
@@ -17,7 +20,13 @@ function FormFloatingTextareaExample() {
     action:"Buy",
     quantity: 0,
     price: 12,
+    stock_id: 'cltz78veu0000gdvz2yal9smn',
+    day: day
   })
+  const [stocks, setStocks] = useState([]);
+  const [selectedStock, setSelectedStock] = useState('ABC');
+  const [stockPrice, setStockPrice] = useState(null);
+  const [, forceRerender] = useState({});
   const [errors, setErrors] = useState({
     // prePrice: false,
     
@@ -43,6 +52,85 @@ function FormFloatingTextareaExample() {
     // const try1 = () => {
     //     alert('see');
     // };
+    useEffect(() => {
+      // Function to fetch available stocks from your database
+      const fetchStocks = async () => {
+        try {
+          // Perform API request to fetch stocks
+          const response = await fetch('/api/get-stocks');
+          if (!response.ok) {
+            throw new Error('Failed to fetch stocks');
+          }
+          const resjson = await response.json();
+          const data = resjson.data
+          const stockSymbols: string[] = data.map(item => item.stock_symbol);
+          console.log('stock data', stockSymbols);
+          setStocks(stockSymbols)
+          // Assuming your data is an array of stock symbols like ['ABC', 'XYZ', ...]
+          // setStocks(data);
+        } catch (error) {
+          console.error('Error fetching stocks:', error);
+        }
+      };
+  
+      // Call the fetchStocks function when the component mounts
+      fetchStocks();
+    }, []); // Empty dependency array ensures this effect runs only once when component mounts
+  
+    useEffect(() => {
+      // Function to fetch stock price based on selected stock
+      const fetchStockPrice = async () => {
+        if (selectedStock) {
+          try {
+            // Perform API request to fetch stock price based on selected stock
+            const response = await fetch(`/api/get-stock-price/${selectedStock}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch stock price');
+            }
+            const data = await response.json();
+            // Assuming your response contains the stock price            
+            setStockPrice(data.data.close);
+            setField('price',data.data.close)
+          } catch (error) {
+            console.error('Error fetching stock price:', error);
+            setStockPrice(null);
+          }
+        }
+      };
+      // Call the fetchStockPrice function when selectedStock changes
+      fetchStockPrice();
+    }, [selectedStock]);
+  
+    const handleStockChange = (e: ChangeEvent<HTMLSelectElement>): void => {
+      setSelectedStock(e.target.value);
+      // Perform any other actions you need with the selected stock
+    };
+
+    const handleSubmit = async () => {
+      try {
+        // Send form data to backend API
+        console.log('form to send', form);
+        
+        const response = 
+        // await axios.post('/api/money-action', form);
+        await fetch('/api/money-action', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // Make sure to set Content-Type header to application/json
+          },
+          body: JSON.stringify(form)
+        });
+        console.log('Response:', response);
+        // Optionally, you can handle success response here
+      } catch (error) {
+        console.error('Error:', error);
+        // Optionally, you can handle error response here
+      }
+      // forceRerender({})
+      window.location.reload();
+      setShow(false)
+    };
+  
   return (
     <>
     <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossOrigin="anonymous"></script>
@@ -63,7 +151,7 @@ function FormFloatingTextareaExample() {
     />
     <script>var Alert = ReactBootstrap.Alert;</script>
 
-    <b className='ml-4'>DAY: 267</b>
+    <b className='ml-4'>DAY: {day}</b>
     <p className='ml-4'>Predicted Price</p>
     <InputGroup size="sm" className="mb-3 ml-4 content-in-box w-50">
         <Form.Control
@@ -83,11 +171,18 @@ function FormFloatingTextareaExample() {
     <FloatingLabel controlId="Symbol" label="Choose the company" className='content-in-box ml-4 w-50'>
       <Form.Select aria-label="Floating label select example"
 
-      onChange={e=>setField('symbol',e.target.value)}
+      // onChange={e=>setField('symbol',e.target.value)}
+        onChange={handleStockChange} value={selectedStock}
       >
-      <option value="ABC">ABC</option>
 
+      {/* <option value="ABC">ABC</option> */}
+        {stocks.map(stock => (
+          <option key={stock} value={stock}>{stock}</option>
+        ))}
       </Form.Select>
+      {stockPrice !== null && (
+        <p>Stock Price for {selectedStock}: {stockPrice}</p>
+      )}
     </FloatingLabel>
     <div className={`${flexBetween} space-x-36 mt-4 ml-4`}>
         <div className={`${flexCol}`}>
@@ -145,7 +240,7 @@ function FormFloatingTextareaExample() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmit}>
             Comfirm Order
           </Button>
         </Modal.Footer>
@@ -154,4 +249,4 @@ function FormFloatingTextareaExample() {
   );
 }
 
-export default FormFloatingTextareaExample;
+export default FormFloatingTextarea;

@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import Navbar from "@/app/scenes/navbar"
 import Button from 'react-bootstrap/Button';
@@ -7,6 +8,21 @@ type Props = {}
 const Research = (props: Props) => {
   const flexBetween = "flex items-center"
   const flexCol = "flex flex-col items-center justify-between"
+  const excelFilePath = '/ICM(1 year).xlsx';
+
+  const handleDownload = () => {
+    // Trigger download by creating a link element
+    try {
+      console.log('the btn for download');
+      
+      const link = document.createElement('a');
+      link.href = excelFilePath;
+      link.download = 'ICM(1 year).xlsx';
+      link.click();
+    } catch (e) {
+      console.log("got err", e);
+    }
+  };
   return (
     <div className={`${flexCol} app`}>
       <div className='box bg-white h-96'>
@@ -21,7 +37,7 @@ const Research = (props: Props) => {
       </div>
       <div className={`${flexBetween}`}>
         <h1 className='m-10 text-white'>HISTORICAL DATA</h1>
-        <button className={`${flexBetween} bg-blue p-3 rounded-lg text-white`}>
+        <button onClick={handleDownload} className={`${flexBetween} bg-blue p-3 rounded-lg text-white`}>
           DOWNLOAD DATA IN  XLSX FILE
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" className='ml-3'>
           <path d="M8 17V15H16V17H8ZM16 10L12 14L8 10H10.5V6H13.5V10H16ZM12 2C17.5 2 22 6.5 22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2ZM12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z" fill="white"/>
@@ -29,7 +45,9 @@ const Research = (props: Props) => {
         </button>
       </div>
       <div className='box bg-white h-96'>
+
       <table className='mx-auto mt-4'>
+      <tbody>
         <tr>
           <th>DAY</th>
           <th>OPEN</th> 
@@ -46,6 +64,7 @@ const Research = (props: Props) => {
           <td>42.139999</td>
           <td>9921100</td>
         </tr>
+        </tbody>
       </table>
       </div>
     </div>

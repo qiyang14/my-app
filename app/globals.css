@@ -32,7 +32,7 @@ body {
 }
 .app {
   /* height: 100%; */
-  min-height: 100vh;
+  /* min-height: 100vh; */
   width: 100%;
   /* font-family: "Lato"; */
   /* @apply text-black; */
@@ -74,4 +74,8 @@ h1 {
 
 h2 {
   font-size: 20px !important; 
+}
+
+.box:after {
+  display: none; /* This will eliminate the display effect */
 }

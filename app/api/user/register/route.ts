@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest){
     try {
@@ -13,7 +15,7 @@ export async function POST(request: NextRequest){
             where: {
               email: email,
             },
-          });
+        });
 
         if(user){
             return NextResponse.json({error: "User already exists"}, {status: 400})
@@ -29,8 +31,8 @@ export async function POST(request: NextRequest){
         const savedUser = await prisma.user.create({
             data: {
                name,
-               password,
                email,
+               password,
             }
          })
          console.log(savedUser);

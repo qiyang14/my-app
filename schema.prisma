@@ -55,12 +55,15 @@ model User {
   password      String?
   accountValue  Float     @default(1000000)
 	cash          Float     @default(1000000)
+  day           Int       @default(256)
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   posts         Post[]
   accounts      Account[]
   sessions      Session[]
   transactions  HistoricalTransaction[]
+  predictedHistory PredictedPrice[]
+  userholding   userholding[]
   @@map(name: "users")
 }
 
@@ -69,23 +72,29 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-  }
+}
 
 
 model Stock {
 	id            String       @default(cuid()) @id
 	stock_name    String
-	stock_symbol  String
-  prices        StockPrice[]
+	stock_symbol  String        @unique
+  prices        stockprice[]
   transaction   HistoricalTransaction[]
+  predictedHistory PredictedPrice[]
+  userholding    userholding[]
 }
 
-model StockPrice {
+model stockprice {
 	id            String       @default(cuid()) @id
 	day           Int     
   stock         Stock        @relation(fields: [stock_id], references: [id])
-	stock_id      String       
-  price         Float
+	stock_id      String       @default("cltz78veu0000gdvz2yal9smn")
+  open          Float
+  high          Float
+  low           Float
+  close         Float
+  volume        Float
 }
 
 model HistoricalTransaction {
@@ -95,5 +104,25 @@ model HistoricalTransaction {
   stock         Stock       @relation(fields: [stock_id], references: [id])
 	stock_id      String     
   user          User        @relation(fields: [user_id], references: [id])       
-  user_id       String      
+  user_id       String   
+  quantity      Int   
+}
+
+model PredictedPrice {
+	id            String       @default(cuid()) @id
+	day           Int     
+  stock         Stock       @relation(fields: [stock_id], references: [id])
+	stock_id      String     
+  user          User        @relation(fields: [user_id], references: [id])       
+  user_id       String
+  predicted_price Float
+}
+
+model userholding {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userid], references: [id])
+  stock     Stock    @relation(fields: [stockid], references: [id])
+  userid    String
+  stockid   String
+  quantity  Int
 }
