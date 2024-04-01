@@ -83,7 +83,7 @@ async function handleUserStock(userId: number, stock_id: String, action: String,
       } 
 }
 
-async function handleUserAccount(user: User, formData, stock_id: String): Promise<number>{
+async function handleUserAccount(user: User, formData: FormData, stock_id: String): Promise<number>{
     let updatedCash = user.cash;
     let updatedAccountValue = user.accountValue;
     let day: number= Number(user.day)
