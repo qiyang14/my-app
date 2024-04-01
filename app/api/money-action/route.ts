@@ -75,7 +75,7 @@ async function handleUserAccount(user, formData, stock_id): Promise<number>{
     let updatedCash = user.cash;
     let updatedAccountValue = user.accountValue;
     let day = user.day
-    const updatedday: numberd = day + 1
+    const updatedday: number = day + 1
     
     const stockPrice = await prisma.stockprice.findFirst({
         where: {
