@@ -10,6 +10,10 @@ export async function GET(request:NextRequest) {
             id: userId
         },
     });
+     
+    if (!user) {
+        throw new Error('user not found.');
+      }
     try {
         const stockPrices = await prisma.stockprice.findMany({
             where: {
