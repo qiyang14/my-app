@@ -10,6 +10,10 @@ import axios from 'axios';
 interface FormFloatingBasicProps {
   day: number;
 }
+interface StockData {
+  stock_symbol: string;
+  // Add other properties as needed
+}
 const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
   const flexCol = "flex flex-col items-center justify-between"
   const flexBetween = "flex items-center"
@@ -23,9 +27,9 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
     stock_id: 'clu54t1t8000012evc40ys6kn',
     day: day
   })
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState<string[]>([])
   const [selectedStock, setSelectedStock] = useState('ABC');
-  const [stockPrice, setStockPrice] = useState(null);
+  const [stockPrice, setStockPrice] = useState<number | null>(null);
   const [, forceRerender] = useState({});
   const [errors, setErrors] = useState({
     // prePrice: false,
@@ -62,7 +66,7 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
             throw new Error('Failed to fetch stocks');
           }
           const resjson = await response.json();
-          const data = resjson.data
+          const data: StockData[] = resjson.data
           const stockSymbols: string[] = data.map(item => item.stock_symbol);
           console.log('stock data', stockSymbols);
           setStocks(stockSymbols)
@@ -180,7 +184,7 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
           <option key={stock} value={stock}>{stock}</option>
         ))}
       </Form.Select>
-      {stockPrice !== null && (
+      {stockPrice !== null && typeof stockPrice === 'number' && (
         <p>Stock Price for {selectedStock}: {stockPrice.toFixed(2)}</p>
       )}
     </FloatingLabel>
