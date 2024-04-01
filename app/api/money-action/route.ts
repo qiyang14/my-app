@@ -7,7 +7,7 @@ interface User {
   id: string;
   cash: number;
   accountValue: number;
-  day: string; // Or whatever type `day` should be
+  day: number; // Or whatever type `day` should be
 }
 
 interface FormData {
