@@ -3,6 +3,18 @@ import prisma from '@/lib/prisma';
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import { sql } from '@vercel/postgres';
 
+interface User {
+  id: string;
+  cash: number;
+  accountValue: number;
+  day: string; // Or whatever type `day` should be
+}
+
+interface FormData {
+  action: 'Buy' | 'Sell'; // action can only be 'Buy' or 'Sell'
+  quantity: number;
+  price: number;
+}
 export async function POST(request:NextRequest) {
     try {
         const formData = await request.json()
@@ -71,10 +83,10 @@ async function handleUserStock(userId: number, stock_id: String, action: String,
       } 
 }
 
-async function handleUserAccount(user, formData, stock_id): Promise<number>{
+async function handleUserAccount(user: User, formData, stock_id: String): Promise<number>{
     let updatedCash = user.cash;
     let updatedAccountValue = user.accountValue;
-    let day = user.day
+    let day: number= Number(user.day)
     const updatedday: number = day + 1
     
     const stockPrice = await prisma.stockprice.findFirst({
@@ -84,6 +96,9 @@ async function handleUserAccount(user, formData, stock_id): Promise<number>{
         },
         select: { close: true },
     });
+    if (!stockPrice) {
+      throw new Error('stockPrice not found.');
+    }
     const stockPriceCloseData= stockPrice.close
     console.log('stockPriceCloseData', stockPriceCloseData);
     const stockholding = await prisma.userholding.findFirst({
