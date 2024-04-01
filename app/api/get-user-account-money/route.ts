@@ -23,9 +23,16 @@ export async function GET(request: Request) {
           throw new Error('User not found.');
         }
     
-        return { accountValue: user.accountValue };
+        return new Response(JSON.stringify({ accountValue: user.accountValue }), {
+          headers: { 'Content-Type': 'application/json' },
+          status: 200 // OK
+      });
       } catch (error) {
         console.error('Error getting user account money:', error);
-        throw new Error('Failed to get user account money.');
+        // throw new Error('Failed to get user account money.');
+        return new Response(JSON.stringify({ error: 'Failed to get user account money.' }), {
+          headers: { 'Content-Type': 'application/json' },
+          status: 500 // Internal Server Error
+      });
       }
 }
