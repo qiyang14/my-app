@@ -44,7 +44,7 @@ async function handleUserStock(userId: number, stock_id: String, action: String,
     try {
         const userHolding = 
         // await sql`SELECT * FROM userholding WHERE userId = ${userId} AND stockId = ${stock_id}`
-        await sql`SELECT COUNT(*) AS count_entries FROM userholding WHERE userId = ${userId} AND stockId = ${stock_id}`
+        await sql`SELECT COUNT(*) AS count_entries FROM userholding WHERE userId = ${String(userId)} AND stockId = ${String(stock_id)}`;
         const countEntries = userHolding.rows[0].count_entries;
         if (countEntries == 0) {
         // if (1) {
