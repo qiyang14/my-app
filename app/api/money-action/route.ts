@@ -90,12 +90,17 @@ async function handleUserAccount(user: User, formData: FormData, stock_id: Strin
     const updatedday: number = day + 1
     
     const stockPrice = await prisma.stockprice.findFirst({
-        where: {
-            stock_id: stock_id,
-            day: updatedday,
-        },
-        select: { close: true },
-    });
+      where: {
+          stock_id: {
+            equals: stock_id as string | undefined, // Assuming stock_id is a string
+          },
+          day: {
+              equals: updatedday, // Assuming updatedday is a date
+          },
+      },
+      select: { close: true },
+  });
+  
     if (!stockPrice) {
       throw new Error('stockPrice not found.');
     }
@@ -103,11 +108,14 @@ async function handleUserAccount(user: User, formData: FormData, stock_id: Strin
     console.log('stockPriceCloseData', stockPriceCloseData);
     const stockholding = await prisma.userholding.findFirst({
         where: {
-            stockid: stock_id,
+            stockid: stock_id as string | undefined,
             userid: user.id,
         },
         select: { quantity: true },
     });
+    if (!stockholding) {
+      throw new Error('stockholding not found.');
+    }
     // Update cash and account value based on action
     console.log('stockholding',stockholding);
     
