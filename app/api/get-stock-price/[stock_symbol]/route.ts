@@ -29,7 +29,9 @@ export async function GET(request:NextRequest, {params}: any) {
                 throw new Error(`Stock with symbol ${stock_symbol} not found`);
               }
             //   console.log(stock);
-          
+        if (!user) {
+            throw new Error(`user not found, cant get stockprice by user's day`);
+            }
         const stockPrice = await prisma.stockprice.findFirst({
         where: {
             stock_id: stock.id,

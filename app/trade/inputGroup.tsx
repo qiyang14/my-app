@@ -20,7 +20,7 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
     action:"Buy",
     quantity: 0,
     price: 12,
-    stock_id: 'cltz78veu0000gdvz2yal9smn',
+    stock_id: 'clu54t1t8000012evc40ys6kn',
     day: day
   })
   const [stocks, setStocks] = useState([]);
@@ -181,7 +181,7 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
         ))}
       </Form.Select>
       {stockPrice !== null && (
-        <p>Stock Price for {selectedStock}: {stockPrice}</p>
+        <p>Stock Price for {selectedStock}: {stockPrice.toFixed(2)}</p>
       )}
     </FloatingLabel>
     <div className={`${flexBetween} space-x-36 mt-4 ml-4`}>
@@ -220,7 +220,7 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
         
       </div>
     {/* <Button variant="secondary" onClick={() => try1()}>See</Button> */}
-    <Button onClick={handleShow} variant="primary" size="lg" className='mt-4 ml-4' >
+    <Button onClick={handleShow} variant="primary" size="lg" className='m-4' >
         <div className={`${flexBetween}`}>
         PREVIEW ORDER
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" className='m-1'>
@@ -233,7 +233,7 @@ const FormFloatingTextarea: React.FC<FormFloatingBasicProps> = ({day}) => {
           <Modal.Title>Order Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <p>You Choose to {form.action} {form.quantity} shares of stock {form.symbol} at a price of $ {form.price} each</p>
+            <p>You Choose to {form.action} {form.quantity} shares of stock {form.symbol} at a price of $ {form.price.toFixed(2)} each</p>
             <p>And Your Predicted Price for this Stock is $ {form.prePrice}</p>
         </Modal.Body>
         <Modal.Footer>
