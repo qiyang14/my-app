@@ -57,9 +57,9 @@ async function handleUserStock(userId: number, stock_id: String, action: String,
             // console.log(userHolding);
           // If user holding exists, update the quantity
           if (action == 'Buy'){
-            await sql`UPDATE userholding SET quantity = quantity + ${quantity} WHERE userId = ${userId} AND stockId = ${stock_id}`
+            await sql`UPDATE userholding SET quantity = quantity + ${Number(quantity)} WHERE userId = ${String(userId)} AND stockId = ${String(stock_id)}`;
           } else if (action == 'Sell'){
-            await sql`UPDATE userholding SET quantity = quantity - ${quantity} WHERE userId = ${userId} AND stockId = ${stock_id}`
+            await sql`UPDATE userholding SET quantity = quantity - ${Number(quantity)} WHERE userId = ${String(userId)} AND stockId = ${String(stock_id)}`;
           }
 
         console.log('update the user hodling');
