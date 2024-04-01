@@ -50,7 +50,7 @@ async function handleUserStock(userId: number, stock_id: String, action: String,
         // if (1) {
           // If user holding doesn't exist, add a new entry
           if (action == 'Buy'){
-            await sql`INSERT INTO userholding (userId, stockId, quantity) VALUES ( ${userId}, ${stock_id}, ${quantity})`
+            await sql`INSERT INTO userholding (userId, stockId, quantity) VALUES (${String(userId)}, ${String(stock_id)}, ${Number(quantity)})`;
             console.log('create the user hodling');
           }
         } else {
