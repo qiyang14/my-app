@@ -25,9 +25,15 @@ export async function POST(request:NextRequest) {
             throw new Error('User not found');
         }
         const qtyPass: number = parseInt(formData.quantity, 10);
-        createHistoricalTransactionEntry(user.day, formData.action, userId, stock_id, qtyPass)
-        handleUserStock(userId,stock_id, action, quantity)
-        handleUserAccount(user, formData, stock_id)
+        const dayforcreateHistoricalTransactionEntry: number = user.day
+        await handleUserStock(userId,stock_id, action, quantity)
+        const valueReturned = await handleUserAccount(user, formData, stock_id)
+        console.log('valueReturned', valueReturned);
+        
+        // const avForHT = parseFloat(valueReturned)
+        const avForHT = valueReturned
+
+        await createHistoricalTransactionEntry(dayforcreateHistoricalTransactionEntry, formData.action, userId, stock_id, qtyPass, avForHT)
         return NextResponse.json({ formData }, { status: 200 });
     } catch (e) {
         return NextResponse.json({ e }, { status: 500 });
@@ -65,11 +71,11 @@ async function handleUserStock(userId: number, stock_id: String, action: String,
       } 
 }
 
-async function handleUserAccount(user, formData, stock_id): Promise<void>{
+async function handleUserAccount(user, formData, stock_id): Promise<number>{
     let updatedCash = user.cash;
     let updatedAccountValue = user.accountValue;
     let day = user.day
-    const updatedday: number = day + 1
+    const updatedday: numberd = day + 1
     
     const stockPrice = await prisma.stockprice.findFirst({
         where: {
@@ -100,6 +106,7 @@ async function handleUserAccount(user, formData, stock_id): Promise<void>{
     updatedAccountValue = updatedCash + stockPriceCloseData*stockholding.quantity;
     console.log('updatedCash, updatedAccountValue', updatedCash, updatedAccountValue);
     updateUserAccount(user.id, updatedAccountValue, updatedCash, updatedday)
+    return updatedAccountValue
 }
 
 async function updateUserAccount(userId: string, newAccountValue: number, newCash: number, newDay: number): Promise<void> {
@@ -120,7 +127,7 @@ async function updateUserAccount(userId: string, newAccountValue: number, newCas
     }
 }
 
-async function createHistoricalTransactionEntry(day: number, action: string, userId: string, stockId: string, quantity:number) {
+async function createHistoricalTransactionEntry(day: number, action: string, userId: string, stockId: string, quantity:number, tAccountValue: number) {
     try {
       const transaction = await prisma.historicalTransaction.create({
         data: {
@@ -129,6 +136,7 @@ async function createHistoricalTransactionEntry(day: number, action: string, use
         user: { connect: { id: userId } },
         stock: { connect: { id: stockId } },
         quantity: quantity,
+        tAccountValue: tAccountValue
         },
       });
       console.log('Historical Transaction created:', transaction);

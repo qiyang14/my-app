@@ -53,8 +53,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   password      String?
-  accountValue  Float     @default(1000000)
-	cash          Float     @default(1000000)
+  accountValue  Float     @default(100000)
+	cash          Float     @default(100000)
   day           Int       @default(256)
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
@@ -89,7 +89,7 @@ model stockprice {
 	id            String       @default(cuid()) @id
 	day           Int     
   stock         Stock        @relation(fields: [stock_id], references: [id])
-	stock_id      String       @default("cltz78veu0000gdvz2yal9smn")
+	stock_id      String       @default("clu54t1t8000012evc40ys6kn")
   open          Float
   high          Float
   low           Float
@@ -105,7 +105,8 @@ model HistoricalTransaction {
 	stock_id      String     
   user          User        @relation(fields: [user_id], references: [id])       
   user_id       String   
-  quantity      Int   
+  quantity      Int
+  tAccountValue Float       
 }
 
 model PredictedPrice {

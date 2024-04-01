@@ -9,7 +9,7 @@ type Props = {}
 
 const Trade = (props: Props) => {
   const flexBetween = "flex items-center"
-  const flexCol = "flex flex-col items-center justify-between"
+  const flexCol = "flex flex-col items-center"
   const [show, setShow] = useState(true);
   const [accountValue, setAccountValue] = useState<number>(1000000);
   const [cashValue, setCashValue] = useState<number>(1000000);
@@ -42,15 +42,15 @@ const Trade = (props: Props) => {
   }, []);
  
   return (
-    <div className={`${flexCol} app`}>
+    <div className={`${flexCol} app min-h-screen`}>
       <div className={`${flexBetween} text-white mt-14 space-x-36`}>
         <div className={`${flexCol}`}>
           <p className={`${flexBetween}`}>ACCOUNT VALUE</p>
-          <p className={`${flexBetween}`}>$ {accountValue}</p>
+          <p className={`${flexBetween}`}>$ {accountValue.toFixed(2)}</p>
         </div>
         <div className={`${flexCol}`}>
           <p className={`${flexBetween}`}>CASH</p>
-          <p className={`${flexBetween}`}>$ {cashValue}</p>
+          <p className={`${flexBetween}`}>$ {cashValue.toFixed(2)}</p>
         </div>
       </div>
       <div className='box bg-white'>

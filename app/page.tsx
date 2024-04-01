@@ -1,11 +1,12 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef  } from 'react';
 import { useRouter } from 'next/router';
 import { sql } from '@vercel/postgres';
 import { PrismaClient } from "@prisma/client";
 import type { ReactElement } from 'react'
 import Navbar from "@/app/scenes/navbar"
-import axios from "axios";
+import axios , { AxiosResponse, AxiosError } from "axios";
+import Chart from 'chart.js/auto';
 
 
 const prisma = new PrismaClient();
@@ -22,7 +23,10 @@ interface User {
   name: string;
   owner: string;
 }
-
+interface HistoricalData {
+  day: number;
+  tAccountValue: number;
+}
 // async function getPosts(){
 //   const posts = await prisma.post.findMany({
 //     where: {published: true},
@@ -42,8 +46,81 @@ export default function Portfolio() {
   //   SELECT Name, Owner
   //   FROM pets;`;
   // console.log(result);
+  const chartRef = useRef<Chart>();
   const [accountValue, setAccountValue] = useState<number>(1000000);
   const [cashValue, setCashValue] = useState<number>(1000000);
+  const [historicalData, setHistoricalData] = useState<HistoricalData[]>([]);
+  // const [currentUrl, setCurrentUrl] = useState('');
+
+    // useEffect(() => {
+    //   // Check if window object is available (client-side)
+    //   if (typeof window !== 'undefined') {
+    //     // Get current URL
+    //     setCurrentUrl(window.location.href);
+    //   }
+    // }, []); // Run once when component mounts
+  const getHistoricalData = async () => {
+    // if(currentUrl != ''){
+    try {
+      // console.log('response.data',response.data.data);
+      const response = await axios.get('/api/portfolio/get-historical-data');
+      // console.log(data.data.data)
+      // console.log('getHistoricalData is called');
+      
+      setHistoricalData(response.data.data);
+    } catch (error) {
+      // console.log(error);
+      
+      if (axios.isAxiosError(error)) {
+        const axiosError: AxiosError = error;
+        // console.error('Axios request failed:', axiosError.message);
+    } else {
+        // console.error('Request failed:', error);
+    }
+    throw error; // rethrow the error for handling in the caller
+      console.error('Error fetching historical prices:', error);
+    }
+  // }
+  };
+
+  getHistoricalData();
+  useEffect(() => {
+    if (historicalData.length > 0) {
+      // console.log('this function is called');
+      
+      // if (chartRef.current) {
+      //   chartRef.current.destroy();
+      // }
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    const values = historicalData.map(item => item.tAccountValue);
+    const labels = historicalData.map(item => item.day);
+    if (chartRef.current) {
+      // console.log('it alr show');
+      
+    } else {
+      chartRef.current = new Chart(ctx, {
+        type: 'line', // or 'bar', 'radar', etc.
+        data: {
+            labels: labels, // Your days array
+            datasets: [{
+                label: 'Account Value',
+                data: values, // Your values array
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });}
+    }
+
+  }, [historicalData])
 
   // const router = useRouter();
 //   const getUserDetails = async () => {
@@ -86,10 +163,10 @@ export default function Portfolio() {
             {/* {users.map((user) => (
             <b key={user.name} className='content-in-box top-6 inset-x-1.5'>this{user.name}</b>
         ))} */}
-            <b className='content-in-box top-6 inset-x-1.5'>$ {accountValue}</b>
+            <b className='content-in-box top-6 inset-x-1.5'>$ {accountValue.toFixed(2)}</b>
 
             <p className='content-in-box top-12 inset-x-1.5'>CASH</p>
-            <p className='content-in-box top-16 inset-x-1.5'>$ {cashValue}</p>
+            <p className='content-in-box top-16 inset-x-1.5'>$ {cashValue.toFixed(2)}</p>
           </div>
         </div>
         <div className = {`${flexCol}`}>
@@ -108,7 +185,7 @@ export default function Portfolio() {
         <div className = {`${flexCol} basis-2/3`}>
           <p className='text-white m-5'>PERFORMANCE</p>
           <div className='box bg-white h-96' style={{width:'80%'}}>
-            
+          <canvas id="myChart" width="100" height="100"></canvas>
           </div>
         </div>
       </div>
